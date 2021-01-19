@@ -9,28 +9,16 @@ public class SpawnTarget : MonoBehaviour
     [SerializeField]
     Transform SpawnPosLeft;
     [SerializeField]
-    Transform SpawnPosRight;
-    Transform RandomPos;
-    float rndpos;
- 
+    Transform SpawnPosRight; 
 
     public void Start()
-    {
-       
+    {       
         StartCoroutine(SpawnCD());       
     }
 
     private void Update()
     {
-        rndpos = Random.Range(0, 3);
-        if (rndpos < 1)
-        {
-            RandomPos = SpawnPosLeft;
-        }
-        if (rndpos >= 1)
-        {
-            RandomPos = SpawnPosRight;
-        }
+        
     }
 
     public void targetSpawn()
@@ -41,7 +29,6 @@ public class SpawnTarget : MonoBehaviour
     public IEnumerator SpawnCD()
     {
         yield return new WaitForSeconds(0f);
-        Instantiate(Target, /*RandomPos.transform.position*/ new Vector3(0, 2.81f, 0), Quaternion.identity);
-        
+        Instantiate(Target, new Vector2(Random.Range(-2.26f,2.26f),2.25f), Quaternion.identity);
     }
 }

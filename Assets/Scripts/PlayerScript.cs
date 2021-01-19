@@ -1,20 +1,18 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 public class PlayerScript : MonoBehaviour
 {
     [SerializeField] GameObject aim;
     [SerializeField] GameObject aimPlume;
     [SerializeField] GameObject Bingo;
+    [SerializeField] GameObject Dead;
     [SerializeField] Text scoreText;
     bool run;
     bool check;
     bool home;
     Vector3 homePos;
-    int score;
-
-    SpawnTarget test;
-
-
+    public int score;
     void Start()
     {
         
@@ -41,6 +39,12 @@ public class PlayerScript : MonoBehaviour
             run = false;
             transform.position = Vector3.MoveTowards(transform.position, new Vector2(0, -3.69f), 6f * Time.deltaTime);
         }
+        if (transform.position == homePos)
+        {
+            home = true;
+            run = false;
+            check = false;
+        }
         if (home == false)
         {
             aimPlume.SetActive(false);
@@ -49,12 +53,7 @@ public class PlayerScript : MonoBehaviour
         {
             aimPlume.SetActive(true);
         }
-        if (transform.position == homePos)
-        {
-            home = true;
-            run = false;
-            check = false;
-        }
+        
         scoreText.text = score.ToString();
     }
 
@@ -69,12 +68,24 @@ public class PlayerScript : MonoBehaviour
         if (collision.tag == "Target")
         {
             check = true;
-            Instantiate(Bingo, transform.position, Quaternion.identity);
+            var clone = Instantiate(Bingo, transform.position, Quaternion.identity);
             Destroy(collision.gameObject, 0);
-            //Invoke("spawnTarget", 0.5f);
-            test.targetSpawn();
-            score += 1;
+            Destroy(clone, 0.5f);
+            Invoke("spawnTarget", 1f);
+            score += 1;            
         }
+
+        if (collision.tag == "Dead")
+        {
+            Destroy(this.gameObject, 0);
+            var clone = Instantiate(Dead, transform.position, Quaternion.identity);
+            Destroy(clone, 1f);
+        }
+    }
+
+    void spawnTarget()
+    {
+        FindObjectOfType<SpawnTarget>().StartCoroutine("SpawnCD");
     }
 
     

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Home
   - Target
+  - Dead
   layers:
   - Default
   - TransparentFX
