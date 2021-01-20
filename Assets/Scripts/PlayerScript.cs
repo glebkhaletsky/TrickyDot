@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 public class PlayerScript : MonoBehaviour
 {
@@ -8,6 +7,7 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] GameObject Bingo;
     [SerializeField] GameObject Dead;
     [SerializeField] Text scoreText;
+    [SerializeField] GameObject TryAgainButton;
     bool run;
     bool check;
     bool home;
@@ -15,7 +15,7 @@ public class PlayerScript : MonoBehaviour
     public int score;
     void Start()
     {
-        
+        TryAgainButton.SetActive(false);
         score = 0;
         check = false;
         run = false;
@@ -28,7 +28,7 @@ public class PlayerScript : MonoBehaviour
         transform.LookAt2D(transform.up, aim.transform.position);
         if (run == true)
         {
-            transform.position = Vector3.MoveTowards(transform.position, aim.transform.position, 6f * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, aim.transform.position, 0.2f);
         }
         else
         {
@@ -37,7 +37,7 @@ public class PlayerScript : MonoBehaviour
         if (check == true)
         {
             run = false;
-            transform.position = Vector3.MoveTowards(transform.position, new Vector2(0, -3.69f), 6f * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, new Vector2(0, -3.69f), 0.2f);
         }
         if (transform.position == homePos)
         {
@@ -80,9 +80,14 @@ public class PlayerScript : MonoBehaviour
             Destroy(this.gameObject, 0);
             var clone = Instantiate(Dead, transform.position, Quaternion.identity);
             Destroy(clone, 1f);
+            //Invoke("tryAgain", 1f);
+            TryAgainButton.SetActive(true);
         }
     }
-
+    void tryAgain()
+    {
+        TryAgainButton.SetActive(true);
+    }
     void spawnTarget()
     {
         FindObjectOfType<SpawnTarget>().StartCoroutine("SpawnCD");

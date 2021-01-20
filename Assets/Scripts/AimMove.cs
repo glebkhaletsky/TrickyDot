@@ -20,7 +20,7 @@ public class AimMove : MonoBehaviour
         }
         else
         {
-            speed = 0.1f;
+            speed = 0.15f;
         }
         if (check)
         {

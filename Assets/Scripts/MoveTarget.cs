@@ -1,14 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MoveTarget : MonoBehaviour
 {
     bool check;
-    float speed;
+    [SerializeField] float speed;
     [SerializeField] int score;
+    int R;
     void Start()
     {
+        R = Random.Range(0, 2);
+        if (R <= 1)
+        {
+            check = true;
+        }
+        if (R >= 1)
+        {
+            check = false;
+        }
         speed = 0;
         score = FindObjectOfType<PlayerScript>().score;
     }
@@ -16,7 +24,7 @@ public class MoveTarget : MonoBehaviour
     
     void Update()
     {
-        
+        speed = score * 0.0001f;
         if (check)
         {
             transform.position = Vector3.MoveTowards(transform.position, new Vector2(-2.46f, 2.25f), speed);
@@ -33,13 +41,9 @@ public class MoveTarget : MonoBehaviour
         {
             check = true; ;
         }
-        if (score >= 10)
+        /*if (score >= 10)
         {
-            speed = 0.001f;
-        }
-        if (score >= 20)
-        {
-            speed = 0.005f;
-        }
+            
+        }*/
     }
 }
