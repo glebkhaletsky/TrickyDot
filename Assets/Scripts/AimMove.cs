@@ -9,14 +9,14 @@ public class AimMove : MonoBehaviour
     {
         check = false;
         stop = false;
-        speed = 0.1f;
+        speed = 8f * Time.deltaTime;
     }
 
     void  FixedUpdate()
     {
         if (stop == true)
         {
-            speed=0f;
+            speed=0;
         }
         else
         {

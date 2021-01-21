@@ -41,9 +41,5 @@ public class MoveTarget : MonoBehaviour
         {
             check = true; ;
         }
-        /*if (score >= 10)
-        {
-            
-        }*/
-    }
+     }
 }

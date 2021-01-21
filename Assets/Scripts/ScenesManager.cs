@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class ScenesManager : MonoBehaviour
 {
     [SerializeField] GameObject FadeIn;
-    //[SerializeField] GameObject FadeOut;
     public void Play()
 {
     SceneManager.LoadScene(1);

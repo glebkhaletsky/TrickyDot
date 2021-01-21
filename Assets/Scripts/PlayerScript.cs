@@ -8,6 +8,13 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] GameObject Dead;
     [SerializeField] Text scoreText;
     [SerializeField] GameObject TryAgainButton;
+    [SerializeField] Text yourScoreText;
+    [SerializeField] Text yourHighScoreText;
+    [SerializeField] GameObject FadeOut;
+    [SerializeField] GameObject FadeStart;
+    [SerializeField] GameObject wow;
+    
+    int highScore;
     bool run;
     bool check;
     bool home;
@@ -15,20 +22,32 @@ public class PlayerScript : MonoBehaviour
     public int score;
     void Start()
     {
+        
+        wow.SetActive(false);
+        if (!PlayerPrefs.HasKey("HighScore"))
+        {
+            PlayerPrefs.SetInt("HighScore", 0);
+        }
+        highScore = PlayerPrefs.GetInt("HighScore");
+
         TryAgainButton.SetActive(false);
         score = 0;
         check = false;
         run = false;
         home = true;
         homePos = new Vector3(0, -3.69f, 0);
+        Invoke("StartFade", 1f);
     }
-
+     void StartFade()
+    {
+        FadeStart.SetActive(false);
+    }
     void FixedUpdate()
     {
         transform.LookAt2D(transform.up, aim.transform.position);
         if (run == true)
         {
-            transform.position = Vector3.MoveTowards(transform.position, aim.transform.position, 0.2f);
+            transform.position = Vector3.MoveTowards(transform.position, aim.transform.position, 8f * Time.deltaTime);
         }
         else
         {
@@ -37,7 +56,7 @@ public class PlayerScript : MonoBehaviour
         if (check == true)
         {
             run = false;
-            transform.position = Vector3.MoveTowards(transform.position, new Vector2(0, -3.69f), 0.2f);
+            transform.position = Vector3.MoveTowards(transform.position, new Vector2(0, -3.69f), 8f * Time.deltaTime);
         }
         if (transform.position == homePos)
         {
@@ -55,6 +74,17 @@ public class PlayerScript : MonoBehaviour
         }
         
         scoreText.text = score.ToString();
+        yourScoreText.text = "Your score: " + score.ToString();
+        yourHighScoreText.text = "High score: " + highScore.ToString();
+
+        if (score > highScore)
+        {
+            highScore = score;
+            PlayerPrefs.SetInt("HighScore", highScore);
+            wow.SetActive(true);
+            
+
+        }
     }
 
     public void onClick()
@@ -77,12 +107,17 @@ public class PlayerScript : MonoBehaviour
 
         if (collision.tag == "Dead")
         {
-            Destroy(this.gameObject, 0);
+            this.gameObject.SetActive(false);
             var clone = Instantiate(Dead, transform.position, Quaternion.identity);
             Destroy(clone, 1f);
-            //Invoke("tryAgain", 1f);
-            TryAgainButton.SetActive(true);
+            Invoke("lose", 0.5f);
         }
+    }
+
+    void lose()
+    {
+        FadeOut.SetActive(true);
+        Invoke("tryAgain", 1.5f);
     }
     void tryAgain()
     {

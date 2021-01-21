@@ -1,16 +1,24 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class MenuPlayerScript : MonoBehaviour
 {
     [SerializeField] GameObject aim;
     [SerializeField] GameObject aimPlume;
     [SerializeField] GameObject Bingo;
+    [SerializeField] Text highScoreText;
 
     bool run;
     bool check;
     bool home;
+    int highScore;
     void Start()
     {
+        if (!PlayerPrefs.HasKey("HighScore"))
+        {
+            PlayerPrefs.SetInt("HighScore", 0);
+        }
+        highScore = PlayerPrefs.GetInt("HighScore");
         check = false;
         run = false;
         home = true;
@@ -40,6 +48,7 @@ public class MenuPlayerScript : MonoBehaviour
         {
             aimPlume.SetActive(true);
         }
+        highScoreText.text = "High score: " + highScore.ToString();
     }
 
     public void onClick()
