@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnTarget : MonoBehaviour
@@ -15,12 +14,6 @@ public class SpawnTarget : MonoBehaviour
     {       
         StartCoroutine(SpawnCD());       
     }
-
-    private void Update()
-    {
-        
-    }
-
     public void targetSpawn()
     {
         StartCoroutine(SpawnCD());        
